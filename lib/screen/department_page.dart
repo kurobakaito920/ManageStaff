@@ -226,15 +226,15 @@ class _DepartmentPageState extends State<DepartmentPage> {
                                                 },
                                               );
                                             } else{
-                                                xDepartment.add({
-                                                'name': newDepartment.name,
-                                                'description': newDepartment.description,
-                                                'numberOfEmployees' : newDepartment.numberOfEmployees,
-                                              }).then((value) => print("Thêm thành công")).catchError((error) => print("Lỗi: $error"));
+                                                xDepartment.doc(snapshot.data!.docs[index].id).update({
+                                                  'name': _selectedDepartment!.name,
+                                                  'description': _selectedDepartment!.description,
+                                                  'numberOfEmployees': _selectedDepartment!.numberOfEmployees,
+                                                }).then((value) => print('Cập nhật thành công')).catchError((error) => print('Lỗi: ${error}'));
+                                                _selectedDepartment = null;
                                             }
-                                            _selectedDepartment = null;
+                                            Navigator.of(context).pop();
                                           });
-                                          Navigator.of(context).pop();
                                         },
                                       ),
                                     ],
