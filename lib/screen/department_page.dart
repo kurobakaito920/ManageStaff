@@ -199,42 +199,15 @@ class _DepartmentPageState extends State<DepartmentPage> {
                                       TextButton(
                                         child: Text('Save'),
                                         onPressed: () {
-                                          setState(() async{
-                                            QuerySnapshot existingDepartment = await xDepartment.where('name', isEqualTo: newDepartment.name).get();
-                                            if(existingDepartment.docs.isNotEmpty){
-                                              showDialog(
-                                                context: context, 
-                                                builder: (BuildContext context){
-                                                  return AlertDialog(
-                                                    title: Text('THÔNG BÁO'),
-                                                    content: Column(
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text('Tên phòng ban đã tồn tại'),
-                                                      ],
-                                                    ),
-                                                      actions: [  
-                                                      TextButton(
-                                                        child: Text('OK'),
-                                                        onPressed: () {
-                                                          Navigator.of(context).pop();
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            } else{
-                                                xDepartment.doc(snapshot.data!.docs[index].id).update({
-                                                  'name': _selectedDepartment!.name,
-                                                  'description': _selectedDepartment!.description,
-                                                  'numberOfEmployees': _selectedDepartment!.numberOfEmployees,
-                                                }).then((value) => print('Cập nhật thành công')).catchError((error) => print('Lỗi: ${error}'));
-                                                _selectedDepartment = null;
-                                            }
-                                            Navigator.of(context).pop();
+                                          setState(() {
+                                              xDepartment.doc(snapshot.data!.docs[index].id).update({
+                                                'name': _selectedDepartment!.name,
+                                                'description': _selectedDepartment!.description,
+                                                'numberOfEmployees': _selectedDepartment!.numberOfEmployees,
+                                              }).then((value) => print('Cập nhật thành công')).catchError((error) => print('Lỗi: ${error}'));
+                                              _selectedDepartment = null;
                                           });
+                                          Navigator.of(context).pop();
                                         },
                                       ),
                                     ],
