@@ -87,8 +87,8 @@ class _DepartmentPageState extends State<DepartmentPage> {
                       'description': newDepartment.description,
                       'numberOfEmployees' : newDepartment.numberOfEmployees,
                     }).then((value) => print("Thêm thành công")).catchError((error) => print("Lỗi: $error"));
+                    Navigator.of(context).pop();
                   }
-                  Navigator.of(context).pop();
                 });
               },
             ),
