@@ -225,221 +225,218 @@ class _EmployeePageState extends State<EmployeePage> {
                     elevation: 4,
                     child: ListTile(
                       title: Text(snapshot.data!.docs[index].get('name')),
-                      // trailing: Row(
-                      //   mainAxisSize: MainAxisSize.min,
-                      //   children: [
-                      //     IconButton(
-                      //       icon: Icon(
-                      //         Icons.edit,
-                      //         color: Colors.blue,
-                      //       ),
-                      //       onPressed: (){
-                      //         setState(() {
-                      //           _selectedEmployee = Employee(
-                      //             name: snapshot.data!.docs[index].get('name'), 
-                      //             gender: snapshot.data!.docs[index].get('gender'), 
-                      //             birthDate: snapshot.data!.docs[index].get('birthDate'), 
-                      //             address: snapshot.data!.docs[index].get('address'), 
-                      //             phoneNumber: snapshot.data!.docs[index].get('phoneNumber'), 
-                      //             email: snapshot.data!.docs[index].get('email'),  
-                      //             salary: snapshot.data!.docs[index].get('salary'),
-                      //           ); 
-                      //         });
-                      //         showDialog(
-                      //           context: context,
-                      //           builder: (BuildContext context) {
-                      //             return AlertDialog(
-                      //               title: Text('Edit Job'),
-                      //               content: SingleChildScrollView(
-                      //                 child: Column(
-                      //                   mainAxisSize: MainAxisSize.min,
-                      //                   children: [
-                      //                     TextField(
-                      //                       decoration:
-                      //                           InputDecoration(labelText: 'Name'),
-                      //                       onChanged: (value) {
-                      //                         setState(() {
-                      //                           _selectedEmployee!.name = value;
-                      //                         });
-                      //                       },
-                      //                       controller: TextEditingController(
-                      //                           text: _selectedEmployee!.name),
-                      //                     ),
-                      //                     TextField(
-                      //                       decoration:
-                      //                           InputDecoration(labelText: 'Gender'),
-                      //                       onChanged: (value) {
-                      //                         setState(() {
-                      //                           _selectedEmployee!.gender = value;
-                      //                         });
-                      //                       },
-                      //                       controller: TextEditingController(
-                      //                           text: _selectedEmployee!.gender),
-                      //                     ),
-                      //                     TextField(
-                      //                       decoration: InputDecoration(
-                      //                           labelText: 'Birth Date'),
-                      //                       onChanged: (value) {
-                      //                         setState(() {
-                      //                           _selectedEmployee!.birthDate =
-                      //                               value as DateTime;
-                      //                         });
-                      //                       },
-                      //                       controller: TextEditingController(
-                      //                           text: _selectedEmployee!.birthDate
-                      //                               .toString()),
-                      //                     ),
-                      //                     TextField(
-                      //                       decoration:
-                      //                           InputDecoration(labelText: 'Address'),
-                      //                       onChanged: (value) {
-                      //                         setState(() {
-                      //                           _selectedEmployee!.address = value;
-                      //                         });
-                      //                       },
-                      //                       controller: TextEditingController(
-                      //                           text: _selectedEmployee!.address),
-                      //                     ),
-                      //                     TextField(
-                      //                       decoration: InputDecoration(
-                      //                           labelText: 'phoneNumber'),
-                      //                       onChanged: (value) {
-                      //                         setState(() {
-                      //                           _selectedEmployee!.phoneNumber =
-                      //                               value;
-                      //                         });
-                      //                       },
-                      //                       controller: TextEditingController(
-                      //                           text: _selectedEmployee!.phoneNumber),
-                      //                     ),
-                      //                     TextField(
-                      //                       decoration:
-                      //                           InputDecoration(labelText: 'email'),
-                      //                       onChanged: (value) {
-                      //                         setState(() {
-                      //                           _selectedEmployee!.email = value;
-                      //                         });
-                      //                       },
-                      //                       controller: TextEditingController(
-                      //                           text: _selectedEmployee!.email),
-                      //                     ),
-                      //                     TextField(
-                      //                       decoration: InputDecoration(
-                      //                           labelText: 'department'),
-                      //                       onChanged: (value) {
-                      //                         setState(() {
-                      //                           _selectedEmployee!.department.name =
-                      //                               value;
-                      //                         });
-                      //                       },
-                      //                       controller: TextEditingController(
-                      //                           text: _selectedEmployee!
-                      //                               .department.name),
-                      //                     ),
-                      //                     TextField(
-                      //                       decoration: InputDecoration(
-                      //                           labelText: 'position'),
-                      //                       onChanged: (value) {
-                      //                         setState(() {
-                      //                           _selectedEmployee!.position.name =
-                      //                               value;
-                      //                         });
-                      //                       },
-                      //                       controller: TextEditingController(
-                      //                           text:
-                      //                               _selectedEmployee!.position.name),
-                      //                     ),
-                      //                     TextField(
-                      //                       decoration:
-                      //                           InputDecoration(labelText: 'branch'),
-                      //                       onChanged: (value) {
-                      //                         setState(() {
-                      //                           _selectedEmployee!.branch.name =
-                      //                               value;
-                      //                         });
-                      //                       },
-                      //                       controller: TextEditingController(
-                      //                           text: _selectedEmployee!.branch.name),
-                      //                     ),
-                      //                     TextField(
-                      //                       decoration:
-                      //                           InputDecoration(labelText: 'salary'),
-                      //                       onChanged: (value) {
-                      //                         setState(() {
-                      //                           _selectedEmployee!.salary =
-                      //                               value as double;
-                      //                         });
-                      //                       },
-                      //                       controller: TextEditingController(
-                      //                           text: _selectedEmployee!.salary
-                      //                               .toString()),
-                      //                     ),
-                      //                   ],
-                      //                 ),
-                      //               ),
-                      //               actions: [
-                      //                 TextButton(
-                      //                   child: Text('Cancel'),
-                      //                   onPressed: () {
-                      //                     setState(() {
-                      //                       _selectedEmployee = null;
-                      //                     });
-                      //                     Navigator.of(context).pop();
-                      //                   },
-                      //                 ),
-                      //                 TextButton(
-                      //                   child: Text('Save'),
-                      //                   onPressed: () {
-                      //                     setState(() {
-                      //                       employees[index] = _selectedEmployee!;
-                      //                       _selectedEmployee = null;
-                      //                     });
-                      //                     Navigator.of(context).pop();
-                      //                   },
-                      //                 ),
-                      //               ],
-                      //             );
-                      //           },
-                      //         );
-                      //       },
-                      //     ),
-                      //     IconButton(
-                      //       icon: Icon(
-                      //         Icons.delete,
-                      //         color: Colors.red,
-                      //       ),
-                      //       onPressed: () {
-                      //         showDialog(
-                      //           context: context,
-                      //           builder: (BuildContext context) {
-                      //             return AlertDialog(
-                      //               title: Text('Confirm'),
-                      //               content: Text(
-                      //                   'Are you sure you want to delete this employee?'),
-                      //               actions: [
-                      //                 TextButton(
-                      //                   child: Text('Cancel'),
-                      //                   onPressed: () {
-                      //                     Navigator.of(context).pop();
-                      //                   },
-                      //                 ),
-                      //                 TextButton(
-                      //                   child: Text('Delete'),
-                      //                   onPressed: () {
-                      //                     setState(() {
-                      //                       xEmployee.doc(snapshot.data!.docs[index].id).delete().then((value) => print('Xóa thành công')).catchError((error)=> print('Không thành công'));
-                      //                     });
-                      //                     Navigator.of(context).pop();
-                      //                   },
-                      //                 ),
-                      //               ],
-                      //             );
-                      //           },
-                      //         );
-                      //       },
-                      //     ),
-                      //   ],
-                      // ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.blue,
+                            ),
+                            onPressed: (){
+                              setState(() {
+                                _selectedEmployee = Employee(
+                                  name: snapshot.data!.docs[index].get('name'), 
+                                  gender: snapshot.data!.docs[index].get('gender'), 
+                                  birthDate: snapshot.data!.docs[index].get('birthDate'), 
+                                  address: snapshot.data!.docs[index].get('address'), 
+                                  phoneNumber: snapshot.data!.docs[index].get('phoneNumber'), 
+                                  department: xEmployee.where('departments').get().toString(),
+                                  position: xEmployee.where('departments').get().toString(),
+                                  branch: xEmployee.where('departments').get().toString(),
+                                  email: snapshot.data!.docs[index].get('email'),  
+                                  salary: snapshot.data!.docs[index].get('salary'),
+                                ); 
+                              });
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Edit Job'),
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextField(
+                                            decoration:
+                                                InputDecoration(labelText: 'Name'),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _selectedEmployee!.name = value;
+                                              });
+                                            },
+                                            controller: TextEditingController(
+                                                text: _selectedEmployee!.name),
+                                          ),
+                                          TextField(
+                                            decoration:
+                                                InputDecoration(labelText: 'Gender'),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _selectedEmployee!.gender = value;
+                                              });
+                                            },
+                                            controller: TextEditingController(
+                                                text: _selectedEmployee!.gender),
+                                          ),
+                                          TextField(
+                                            decoration:
+                                                InputDecoration(labelText: 'Address'),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _selectedEmployee!.address = value;
+                                              });
+                                            },
+                                            controller: TextEditingController(
+                                                text: _selectedEmployee!.address),
+                                          ),
+                                          TextField(
+                                            decoration: InputDecoration(
+                                                labelText: 'phoneNumber'),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _selectedEmployee!.phoneNumber =
+                                                    value;
+                                              });
+                                            },
+                                            controller: TextEditingController(
+                                                text: _selectedEmployee!.phoneNumber),
+                                          ),
+                                          TextField(
+                                            decoration:
+                                                InputDecoration(labelText: 'email'),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _selectedEmployee!.email = value;
+                                              });
+                                            },
+                                            controller: TextEditingController(
+                                                text: _selectedEmployee!.email),
+                                          ),
+                                          // TextField(
+                                          //   decoration: InputDecoration(
+                                          //       labelText: 'department'),
+                                          //   onChanged: (value) {
+                                          //     setState(() {
+                                          //       _selectedEmployee!.department.name =
+                                          //           value;
+                                          //     });
+                                          //   },
+                                          //   controller: TextEditingController(
+                                          //       text: _selectedEmployee!
+                                          //           .department.name),
+                                          // ),
+                                          // TextField(
+                                          //   decoration: InputDecoration(
+                                          //       labelText: 'position'),
+                                          //   onChanged: (value) {
+                                          //     setState(() {
+                                          //       _selectedEmployee!.position.name =
+                                          //           value;
+                                          //     });
+                                          //   },
+                                          //   controller: TextEditingController(
+                                          //       text:
+                                          //           _selectedEmployee!.position.name),
+                                          // ),
+                                          // TextField(
+                                          //   decoration:
+                                          //       InputDecoration(labelText: 'branch'),
+                                          //   onChanged: (value) {
+                                          //     setState(() {
+                                          //       _selectedEmployee!.branch.name =
+                                          //           value;
+                                          //     });
+                                          //   },
+                                          //   controller: TextEditingController(
+                                          //       text: _selectedEmployee!.branch.name),
+                                          // ),
+                                          TextField(
+                                            decoration:
+                                                InputDecoration(labelText: 'salary'),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _selectedEmployee!.salary =
+                                                    value as double;
+                                              });
+                                            },
+                                            controller: TextEditingController(
+                                                text: _selectedEmployee!.salary
+                                                    .toString()),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        child: Text('Cancel'),
+                                        onPressed: () {
+                                          setState(() {
+                                            _selectedEmployee = null;
+                                          });
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('Save'),
+                                        onPressed: () {
+                                          setState(() {
+                                            xEmployee.doc(snapshot.data!.docs[index].id).update({
+                                              'name': _selectedEmployee!.name,
+                                              'gender': _selectedEmployee!.gender,
+                                              'birthDate': _selectedEmployee!.birthDate,
+                                              'address': _selectedEmployee!.address,
+                                              'phoneNumber': _selectedEmployee!.phoneNumber,
+                                              'email': _selectedEmployee!.email,
+                                              'salary': _selectedEmployee!.salary,
+                                            });
+                                          });
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Confirm'),
+                                    content: Text(
+                                        'Are you sure you want to delete this employee?'),
+                                    actions: [
+                                      TextButton(
+                                        child: Text('Cancel'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('Delete'),
+                                        onPressed: () {
+                                          setState(() {
+                                            xEmployee.doc(snapshot.data!.docs[index].id).delete().then((value) => print('Xóa thành công')).catchError((error)=> print('Không thành công'));
+                                          });
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                       onTap: () {
                         showDialog(
                           context: context,
