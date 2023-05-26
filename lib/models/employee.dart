@@ -14,9 +14,9 @@ class Employee {
   String address;
   String phoneNumber;
   String email;
-  Department department;
-  Position position;
-  Branch branch;
+  String department;
+  String position;
+  String branch;
   double salary;
 
   Employee({
@@ -40,9 +40,9 @@ class Employee {
     address: json['address']! as String,
     phoneNumber: json['phoneNumber']! as String,
     email: json['email']! as String,
-    department: json['department']! as Department,
-    position: json['position']! as Position,
-    branch: json['branch']! as Branch,
+    department: json['department']! as String,
+    position: json['position']! as String,
+    branch: json['branch']! as String,
     salary: json['salary']! as double,
   );
 
@@ -54,7 +54,7 @@ class Employee {
       'address': address,
       'phoneNumber': phoneNumber,
       'email': email,
-      'department': department.toJson(),
+      'department': department,
       'position': position,
       'branch': branch,
       'salary': salary,
