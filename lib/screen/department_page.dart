@@ -85,7 +85,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
                       xDepartment.add({
                       'name': newDepartment.name,
                       'description': newDepartment.description,
-                      'numberOfEmployees' : newDepartment.numberOfEmployees,
+                      'numberOfEmployees' : newDepartment,
                     }).then((value) => print("Thêm thành công")).catchError((error) => print("Lỗi: $error"));
                     Navigator.of(context).pop();
                   }
@@ -173,7 +173,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
                                             onChanged: (value) {
                                               setState(() {
                                                 _selectedDepartment!
-                                                    .numberOfEmployees = value as int;
+                                                    .numberOfEmployees = int.parse(value);
                                               });
                                             },
                                             controller: TextEditingController(
@@ -199,15 +199,15 @@ class _DepartmentPageState extends State<DepartmentPage> {
                                       TextButton(
                                         child: Text('Save'),
                                         onPressed: () {
-                                          setState(() {
-                                              xDepartment.doc(snapshot.data!.docs[index].id).update({
+                                          setState(() async{
+                                              await xDepartment.doc(snapshot.data!.docs[index].id).update({
                                                 'name': _selectedDepartment!.name,
                                                 'description': _selectedDepartment!.description,
-                                                'numberOfEmployees': _selectedDepartment!.numberOfEmployees,
+                                                'numberOfEmployees': _selectedDepartment!.numberOfEmployees.toInt(),
                                               }).then((value) => print('Cập nhật thành công')).catchError((error) => print('Lỗi: ${error}'));
                                               _selectedDepartment = null;
+                                              Navigator.of(context).pop();
                                           });
-                                          Navigator.of(context).pop();
                                         },
                                       ),
                                     ],
