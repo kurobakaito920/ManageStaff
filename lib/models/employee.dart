@@ -10,7 +10,7 @@ class Employee {
   String? id;
   String name;
   String gender;
-  DateTime birthDate;
+  String birthDate;
   String address;
   String phoneNumber;
   String email;
@@ -36,7 +36,7 @@ class Employee {
   Employee.fromJson(Map<String, Object?> json) : this(
     name: json['name']! as String,
     gender: json['gender']! as String,
-    birthDate: json['birthDate']! as DateTime,
+    birthDate: json['birthDate']! as String,
     address: json['address']! as String,
     phoneNumber: json['phoneNumber']! as String,
     email: json['email']! as String,
