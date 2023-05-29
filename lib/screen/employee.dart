@@ -20,7 +20,7 @@ class _EmployeePageState extends State<EmployeePage> {
     Employee newEmployee = Employee(
       name: '',
       gender: '',
-      birthDate: DateTime.now(),
+      birthDate: '',
       address: '',
       phoneNumber: '',
       email: '',
@@ -54,7 +54,7 @@ class _EmployeePageState extends State<EmployeePage> {
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Birth Date'),
                   onChanged: (value) {
-                    newEmployee.birthDate = DateTime.parse(value);
+                    newEmployee.birthDate = value;
                   },
                   keyboardType: TextInputType.datetime,
                 ),
@@ -241,9 +241,9 @@ class _EmployeePageState extends State<EmployeePage> {
                                   birthDate: snapshot.data!.docs[index].get('birthDate'), 
                                   address: snapshot.data!.docs[index].get('address'), 
                                   phoneNumber: snapshot.data!.docs[index].get('phoneNumber'), 
-                                  department: xEmployee.where('departments').get().toString(),
-                                  position: xEmployee.where('departments').get().toString(),
-                                  branch: xEmployee.where('departments').get().toString(),
+                                  department: snapshot.data!.docs[index].get('department'), 
+                                  position: snapshot.data!.docs[index].get('position'),
+                                  branch: snapshot.data!.docs[index].get('branch'),
                                   email: snapshot.data!.docs[index].get('email'),  
                                   salary: snapshot.data!.docs[index].get('salary'),
                                 ); 
@@ -313,44 +313,93 @@ class _EmployeePageState extends State<EmployeePage> {
                                             controller: TextEditingController(
                                                 text: _selectedEmployee!.email),
                                           ),
-                                          // TextField(
-                                          //   decoration: InputDecoration(
-                                          //       labelText: 'department'),
-                                          //   onChanged: (value) {
-                                          //     setState(() {
-                                          //       _selectedEmployee!.department.name =
-                                          //           value;
-                                          //     });
-                                          //   },
-                                          //   controller: TextEditingController(
-                                          //       text: _selectedEmployee!
-                                          //           .department.name),
-                                          // ),
-                                          // TextField(
-                                          //   decoration: InputDecoration(
-                                          //       labelText: 'position'),
-                                          //   onChanged: (value) {
-                                          //     setState(() {
-                                          //       _selectedEmployee!.position.name =
-                                          //           value;
-                                          //     });
-                                          //   },
-                                          //   controller: TextEditingController(
-                                          //       text:
-                                          //           _selectedEmployee!.position.name),
-                                          // ),
-                                          // TextField(
-                                          //   decoration:
-                                          //       InputDecoration(labelText: 'branch'),
-                                          //   onChanged: (value) {
-                                          //     setState(() {
-                                          //       _selectedEmployee!.branch.name =
-                                          //           value;
-                                          //     });
-                                          //   },
-                                          //   controller: TextEditingController(
-                                          //       text: _selectedEmployee!.branch.name),
-                                          // ),
+                                          StreamBuilder<QuerySnapshot>(
+                                            stream: FirebaseFirestore.instance.collection('departments').snapshots(),
+                                            builder: (context, snapshot) {
+                                              if (!snapshot.hasData) {
+                                                return CircularProgressIndicator();
+                                              } else {
+                                                final departments = snapshot.data?.docs.reversed.toList();
+                                                lstDepartments = [];
+                                                for (var department in departments!) {
+                                                  lstDepartments.add(DropdownMenuItem(
+                                                    value: department.id,
+                                                    child: Text(department['name']),
+                                                  ));
+                                                }
+                                              }
+                                              String? initialValue = _selectedEmployee!.department.isNotEmpty ? lstDepartments[0].value : null;
+                                              return DropdownButtonFormField<String>(
+                                                items: lstDepartments,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    _selectedEmployee!.department = value!;
+                                                  });
+                                                },
+                                                value: initialValue,
+                                                isExpanded: false,
+                                                decoration: InputDecoration(labelText: 'Department'),
+                                              );
+                                            },
+                                          ),
+                                          StreamBuilder<QuerySnapshot>(
+                                            stream: FirebaseFirestore.instance.collection('positions').snapshots(),
+                                            builder: (context, snapshot) {
+                                              if (!snapshot.hasData) {
+                                                return CircularProgressIndicator();
+                                              } else {
+                                                final positions = snapshot.data?.docs.reversed.toList();
+                                                lstPosition = [];
+                                                for (var i in positions!) {
+                                                  lstPosition.add(DropdownMenuItem(
+                                                    value: i.id,
+                                                    child: Text(i['name']),
+                                                  ));
+                                                }
+                                              }
+                                              String? initialValue = _selectedEmployee!.position.isNotEmpty ? lstPosition[0].value : null;
+                                              return DropdownButtonFormField<String>(
+                                                items: lstPosition,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    _selectedEmployee!.position = value!;
+                                                  });
+                                                },
+                                                value: initialValue,
+                                                isExpanded: false,
+                                                decoration: InputDecoration(labelText: 'Position'),
+                                              );
+                                            },
+                                          ),
+                                          StreamBuilder<QuerySnapshot>(
+                                            stream: FirebaseFirestore.instance.collection('branch').snapshots(),
+                                            builder: (context, snapshot) {
+                                              if (!snapshot.hasData) {
+                                                return CircularProgressIndicator();
+                                              } else {
+                                                final branches = snapshot.data?.docs.reversed.toList();
+                                                lstBranches = [];
+                                                for (var i in branches!) {
+                                                  lstBranches.add(DropdownMenuItem(
+                                                    value: i.id,
+                                                    child: Text(i['name']),
+                                                  ));
+                                                }
+                                              }
+                                              String? initialValue = _selectedEmployee!.branch.isNotEmpty ? lstBranches[0].value : null;
+                                              return DropdownButtonFormField<String>(
+                                                items: lstBranches,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    _selectedEmployee!.branch = value!;
+                                                  });
+                                                },
+                                                value: initialValue,
+                                                isExpanded: false,
+                                                decoration: InputDecoration(labelText: 'Branch'),
+                                              );
+                                            },
+                                          ),
                                           TextField(
                                             decoration:
                                                 InputDecoration(labelText: 'salary'),
@@ -380,18 +429,21 @@ class _EmployeePageState extends State<EmployeePage> {
                                       TextButton(
                                         child: Text('Save'),
                                         onPressed: () {
-                                          setState(() {
+                                          setState(() async{
                                             xEmployee.doc(snapshot.data!.docs[index].id).update({
                                               'name': _selectedEmployee!.name,
                                               'gender': _selectedEmployee!.gender,
                                               'birthDate': _selectedEmployee!.birthDate,
                                               'address': _selectedEmployee!.address,
                                               'phoneNumber': _selectedEmployee!.phoneNumber,
+                                              'department': _selectedEmployee!.department,
+                                              'position': _selectedEmployee!.position,
+                                              'branch': _selectedEmployee!.branch,
                                               'email': _selectedEmployee!.email,
                                               'salary': _selectedEmployee!.salary,
-                                            });
+                                            }).then((value) => print('Cập nhật thành công')).catchError((error) => print('Lỗi: $error'));
+                                            Navigator.of(context).pop();
                                           });
-                                          Navigator.of(context).pop();
                                         },
                                       ),
                                     ],
@@ -490,6 +542,42 @@ class EmployeeDetailDialog extends StatelessWidget {
                   Text('address: ${data['address']}'),
                   Text('phoneNumber: ${data['phoneNumber']}'),
                   Text('email: ${data['email']}'),
+                  FutureBuilder<DocumentSnapshot<Object?>>(
+                    future: FirebaseFirestore.instance.collection('departments').doc(data['department']).get(),
+                    builder:(context, departmentSnapshot) {
+                      if(departmentSnapshot.connectionState == ConnectionState.done && departmentSnapshot.hasData){
+                        Map<String, dynamic>? departmentData = departmentSnapshot.data!.data() as Map<String, dynamic>?;
+                        String departmentName = departmentData?['name'] ?? 'không tìm thấy';
+                        return Text('department: $departmentName');
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    },
+                  ),
+                  FutureBuilder<DocumentSnapshot<Object?>>(
+                    future: FirebaseFirestore.instance.collection('positions').doc(data['position']).get(),
+                    builder:(context, positionSnapshot) {
+                      if(positionSnapshot.connectionState == ConnectionState.done && positionSnapshot.hasData){
+                        Map<String, dynamic>? positionData = positionSnapshot.data!.data() as Map<String, dynamic>?;
+                        String positionName = positionData?['name'] ?? 'không tìm thấy';
+                        return Text('position: $positionName');
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    },
+                  ),
+                  FutureBuilder<DocumentSnapshot<Object?>>(
+                    future: FirebaseFirestore.instance.collection('branch').doc(data['branch']).get(),
+                    builder:(context, branchSnapshot) {
+                      if(branchSnapshot.connectionState == ConnectionState.done && branchSnapshot.hasData){
+                        Map<String, dynamic>? branchData = branchSnapshot.data!.data() as Map<String, dynamic>?;
+                        String branchName = branchData?['name'] ?? 'không tìm thấy';
+                        return Text('branch: $branchName');
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
