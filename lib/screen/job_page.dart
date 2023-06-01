@@ -17,8 +17,8 @@ class JobList extends StatelessWidget {
       if (!employeesForJobs.containsKey(job.name)) {
         employeesForJobs[job.name] = [];
       }
-      final employee = employees.firstWhere((e) => e.id == job.employeeId);
-      employeesForJobs[job.name]!.add(employee);
+      // final employee = employees.firstWhere((e) => e.id == job.employeeId);
+      // employeesForJobs[job.name]!.add(employee);
     }
 
     return Scaffold(
@@ -66,12 +66,12 @@ class JobList extends StatelessWidget {
       margin: const EdgeInsets.all(8.0),
       child: Card(
         elevation: 4,
-        child: ListTile(
-          title: Text(employee.name),
-          subtitle:
-              Text('${employee.position.name} - ${employee.department.name}'),
-          trailing: Text('\$${employee.salary.toStringAsFixed(2)}'),
-        ),
+        // child: ListTile(
+        //   title: Text(employee.name),
+        //   subtitle:
+        //       Text('${employee.position.name} - ${employee.department.name}'),
+        //   trailing: Text('\$${employee.salary.toStringAsFixed(2)}'),
+        // ),
       ),
     );
   }

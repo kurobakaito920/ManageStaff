@@ -16,19 +16,19 @@ class _SalaryCalculatorState extends State<SalaryCalculator> {
     final List<String> salaryInfo =
         []; // Danh sách lưu thông tin lương của các nhân viên
 
-    for (final employee in employees) {
-      double salary;
-      if (selectedOption == 'Per hour') {
-        const totalHours = 160;
-        salary = employee.position.hourlyRate * totalHours;
-      } else {
-        salary = employee.position.averageSalary;
-      }
-      employee.salary = salary;
+    // for (final employee in employees) {
+    //   double salary;
+    //   if (selectedOption == 'Per hour') {
+    //     const totalHours = 160;
+    //     salary = employee.position.hourlyRate * totalHours;
+    //   } else {
+    //     salary = employee.position.averageSalary;
+    //   }
+    //   employee.salary = salary;
 
-      // Thêm thông tin lương của nhân viên vào danh sách
-      salaryInfo.add('${employee.name}: $salary \$');
-    }
+    //   // Thêm thông tin lương của nhân viên vào danh sách
+    //   salaryInfo.add('${employee.name}: $salary \$');
+    // }
 
     // Hiển thị thông tin lương của tất cả các nhân viên bằng một hộp thoại
     showDialog<void>(
@@ -76,21 +76,21 @@ class _SalaryCalculatorState extends State<SalaryCalculator> {
             ],
           ),
           // Hiển thị danh sách nhân viên
-          Expanded(
-            child: ListView.builder(
-              itemCount: employees.length,
-              itemBuilder: (BuildContext context, int index) {
-                final employee = employees[index];
-                return Card(
-                  child: ListTile(
-                    title: Text(employee.name),
-                    subtitle: Text('Position: ${employee.position.name}'),
-                    trailing: Text('Salary: ${employee.salary} \$'),
-                  ),
-                );
-              },
-            ),
-          ),
+          // Expanded(
+          //   child: ListView.builder(
+          //     itemCount: employees.length,
+          //     itemBuilder: (BuildContext context, int index) {
+          //       final employee = employees[index];
+          //       return Card(
+          //         child: ListTile(
+          //           title: Text(employee.name),
+          //           //subtitle: Text('Position: ${employee.position.name}'),
+          //           trailing: Text('Salary: ${employee.salary} \$'),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
           // Nút tính lương
           ElevatedButton(
             onPressed: () {

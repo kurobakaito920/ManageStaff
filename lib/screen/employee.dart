@@ -1,10 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/employee.dart';
 import '../models/department.dart';
 import '../models/position.dart';
 import '../models/branch.dart';
+import 'package:my_barcode_scanner/my_barcode_scanner.dart';
+import 'dart:async';
+
+//import 'package:image_picker/image_picker.dart';
+//import 'package:permission_handler/permission_handler.dart';
 
 class EmployeePage extends StatefulWidget {
   @override
@@ -13,15 +19,39 @@ class EmployeePage extends StatefulWidget {
 
 class _EmployeePageState extends State<EmployeePage> {
   bool _showDetails = false;
+  String cardID = '', userName = '', date = '', gender = '', address = '';
   Employee? _selectedEmployee;
   CollectionReference xEmployee = FirebaseFirestore.instance.collection('employees');
   List<DropdownMenuItem<String>> lstDepartments = [], lstBranches = [], lstPosition = [];
+  Future<void> scanBarcodeNormal() async {
+      String barcodeScanRes;
+      // Platform messages may fail, so we use a try/catch PlatformException.
+      try {
+        barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+            '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+        print(barcodeScanRes);
+      } on PlatformException {
+        barcodeScanRes = 'Failed to get platform version.';
+      }
+      if (!mounted) return;
+
+      setState(() {
+        //List<void> convertToArray = barcodeScanRes.split('||').map((x) => print(x)).toList();
+        List<String> convertToArray2 = barcodeScanRes.split('|').map((String e) => e).toList();
+        cardID = convertToArray2.isNotEmpty ? convertToArray2[0] : 'Unknown';
+        userName = convertToArray2.isNotEmpty ? convertToArray2[2] : 'Unknown';
+        date = convertToArray2.isNotEmpty ? convertToArray2[3] : 'Unknown';
+        gender = convertToArray2.isNotEmpty ? convertToArray2[4] : 'Unknown';
+        address = convertToArray2.isNotEmpty ? convertToArray2[5] : 'Unknown';
+      });
+    }
   Future<void> _addNewEmployee() async{
     Employee newEmployee = Employee(
       name: '',
       gender: '',
       birthDate: '',
       address: '',
+      cardID: '',
       phoneNumber: '',
       email: '',
       department: '',
@@ -29,7 +59,9 @@ class _EmployeePageState extends State<EmployeePage> {
       branch: '',
       salary: 0.0,
     );
-
+    void initState() {
+      super.initState();
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -39,31 +71,6 @@ class _EmployeePageState extends State<EmployeePage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Name'),
-                  onChanged: (value) {
-                    newEmployee.name = value;
-                  },
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Gender'),
-                  onChanged: (value) {
-                    newEmployee.gender = value;
-                  },
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Birth Date'),
-                  onChanged: (value) {
-                    newEmployee.birthDate = value;
-                  },
-                  keyboardType: TextInputType.datetime,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Address'),
-                  onChanged: (value) {
-                    newEmployee.address = value;
-                  },
-                ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Phone Number'),
                   onChanged: (value) {
@@ -169,6 +176,12 @@ class _EmployeePageState extends State<EmployeePage> {
                   },
                   keyboardType: TextInputType.number,
                 ),
+                ElevatedButton(
+                  onPressed: () async => await scanBarcodeNormal(),
+                  child: Text('Scan CardID')),
+                  // Text('Scan result : $_scanBarcode\n',
+                  //   style: TextStyle(fontSize: 20)
+                  // )
               ],
             ),
           ),
@@ -184,10 +197,11 @@ class _EmployeePageState extends State<EmployeePage> {
               onPressed: () {
                 setState(() {
                   xEmployee.add({
-                    'name': newEmployee.name,
-                    'gender': newEmployee.gender,
-                    'birthDate': newEmployee.birthDate,
-                    'address': newEmployee.address,
+                    'name': userName.toString(),
+                    'gender': gender.toString(),
+                    'birthDate': date.toString(),
+                    'address': address.toString(),
+                    'cardID': cardID.toString(),
                     'phoneNumber': newEmployee.phoneNumber,
                     'email': newEmployee.email,
                     'department': newEmployee.department,
@@ -240,6 +254,7 @@ class _EmployeePageState extends State<EmployeePage> {
                                   gender: snapshot.data!.docs[index].get('gender'), 
                                   birthDate: snapshot.data!.docs[index].get('birthDate'), 
                                   address: snapshot.data!.docs[index].get('address'), 
+                                  cardID: snapshot.data!.docs[index].get('cardID'),
                                   phoneNumber: snapshot.data!.docs[index].get('phoneNumber'), 
                                   department: snapshot.data!.docs[index].get('department'), 
                                   position: snapshot.data!.docs[index].get('position'),
@@ -542,6 +557,7 @@ class EmployeeDetailDialog extends StatelessWidget {
                   Text('address: ${data['address']}'),
                   Text('phoneNumber: ${data['phoneNumber']}'),
                   Text('email: ${data['email']}'),
+                  Text('cardID: ${data['cardID']}'),
                   FutureBuilder<DocumentSnapshot<Object?>>(
                     future: FirebaseFirestore.instance.collection('departments').doc(data['department']).get(),
                     builder:(context, departmentSnapshot) {

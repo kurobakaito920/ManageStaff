@@ -12,6 +12,7 @@ class Employee {
   String gender;
   String birthDate;
   String address;
+  String cardID;
   String phoneNumber;
   String email;
   String department;
@@ -25,6 +26,7 @@ class Employee {
     required this.gender,
     required this.birthDate,
     required this.address,
+    required this.cardID,
     required this.phoneNumber,
     required this.email,
     required this.department,
@@ -38,6 +40,7 @@ class Employee {
     gender: json['gender']! as String,
     birthDate: json['birthDate']! as String,
     address: json['address']! as String,
+    cardID: json['cardID']! as String,
     phoneNumber: json['phoneNumber']! as String,
     email: json['email']! as String,
     department: json['department']! as String,
@@ -52,6 +55,7 @@ class Employee {
       'gender': gender,
       'birthDate': birthDate,
       'address': address,
+      'cardID': cardID,
       'phoneNumber': phoneNumber,
       'email': email,
       'department': department,
