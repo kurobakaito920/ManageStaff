@@ -99,31 +99,3 @@ List<Branch> branches = [
     email: 'branch2@example.com',
   ),
 ];
-
-//! Job
-List<Job> jobs = [
-  Job(
-    id: '1',
-    employeeId: '1',
-    name: 'Sales Call',
-    description: 'Make sales calls to potential customers',
-    startTime: DateTime(2023, 4, 24, 9, 0),
-    endTime: DateTime(2023, 4, 24, 11, 0),
-  ),
-  Job(
-    id: '2',
-    employeeId: '2',
-    name: 'Marketing Campaign',
-    description: 'Develop marketing campaign for new product',
-    startTime: DateTime(2023, 4, 25, 10, 0),
-    endTime: DateTime(2023, 4, 26, 17, 0),
-  ),
-  Job(
-    id: '3',
-    employeeId: '3',
-    name: 'Marketing Campaign',
-    description: 'Develop marketing campaign for new product',
-    startTime: DateTime(2023, 4, 25, 10, 0),
-    endTime: DateTime(2023, 4, 26, 17, 0),
-  ),
-];

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../models/employee.dart';
 import '../models/department.dart';
 import '../models/position.dart';
@@ -43,6 +44,15 @@ class _EmployeePageState extends State<EmployeePage> {
         date = convertToArray2.isNotEmpty ? convertToArray2[3] : 'Unknown';
         gender = convertToArray2.isNotEmpty ? convertToArray2[4] : 'Unknown';
         address = convertToArray2.isNotEmpty ? convertToArray2[5] : 'Unknown';
+
+        Fluttertoast.showToast(
+          msg: "Suggest get cardID",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0
+        );
       });
     }
   Future<void> _addNewEmployee() async{

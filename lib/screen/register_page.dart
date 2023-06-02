@@ -71,7 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (value!.isEmpty) {
                         return 'Email không được để trống';
                       }
-                      if (!value.contains('@')) {
+                      if (!value.contains('@gmail.com')) {
                         return 'Email không hợp lệ';
                       }
                       return null;
