@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screen/main_page.dart';
 import 'package:flutter_app/screen/register_page.dart';
@@ -5,9 +6,11 @@ import 'package:flutter_app/screen/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final TextEditingController _emailController = TextEditingController();
+    final _passwordController = TextEditingController();
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -31,34 +34,56 @@ class LoginPage extends StatelessWidget {
                   border: Border.all(color: Colors.black, width: 2.0),
                 ),
               ),
-              const SizedBox(height: 32.0),
-              const SizedBox(
-                width: 300.0,
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  icon: Icon(Icons.email),
                 ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Email không được để trống';
+                  }
+                  if (!value.contains('@gmail.com')) {
+                    return 'Email không hợp lệ';
+                  }
+                  return null;
+                },
               ),
-              const SizedBox(height: 16.0),
-              const SizedBox(
-                width: 300.0,
-                child: TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    border: OutlineInputBorder(),
-                  ),
+              TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Mật khẩu',
+                  icon: Icon(Icons.lock),
                 ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Mật khẩu không được để trống';
+                  }
+                  if (value.length < 6) {
+                    return 'Mật khẩu phải có ít nhất 6 ký tự';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MainPage()),
-                  );
+                onPressed: () async{
+                  try {
+                    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
+                    // Navigate to the main page or perform other actions after successful sign-in
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainPage()),
+                    );
+                  } catch (e) {
+                    print('Sign-in failed: $e');
+                    // Handle sign-in failure, such as displaying an error message
+                  }
                 },
                 child: const Text('Sign In'),
               ),

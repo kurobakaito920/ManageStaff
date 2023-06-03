@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screen/login_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 
@@ -15,7 +18,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   @override
   void dispose() {
     _nameController.dispose();
@@ -96,12 +100,29 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   const SizedBox(height: 25.0),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async{
                       if (_formKey.currentState!.validate()) {
                         String name = _nameController.text;
                         String email = _emailController.text;
                         String password = _passwordController.text;
-                        // Submit form with name, email, and password
+                        try {
+                          UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+                            email: email,
+                            password: password,
+                          );
+                          Fluttertoast.showToast(
+                            msg: "Register Suggest!!!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                          );
+                          // Additional actions after successful registration, such as saving user data
+                        } catch (e) {
+                          print('Registration failed: $e');
+                          // Handle registration failure, such as displaying an error message
+                        }
                       }
                     },
                     child: SizedBox(
@@ -154,8 +175,20 @@ class _RegisterPageState extends State<RegisterPage> {
             Container(
               alignment: Alignment.center,
               child: ElevatedButton.icon(
-                onPressed: () {
-                  // Handle sign in with Google
+                onPressed: () async{
+                  try {
+                    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+                    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+                    final AuthCredential credential = GoogleAuthProvider.credential(
+                      accessToken: googleAuth.accessToken,
+                      idToken: googleAuth.idToken,
+                    );
+                    UserCredential userCredential = await _auth.signInWithCredential(credential);
+                    // Additional actions after successful Google Sign-In, such as saving user data
+                  } catch (e) {
+                    print('Google Sign-In failed: $e');
+                    // Handle Google Sign-In failure, such as displaying an error message
+                  }
                 },
                 icon: const FaIcon(FontAwesomeIcons.google),
                 label: const Text('Continue with Google'),

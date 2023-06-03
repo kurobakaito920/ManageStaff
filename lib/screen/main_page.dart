@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/job.dart';
 import 'package:flutter_app/screen/branch_page.dart';
@@ -11,6 +12,7 @@ import '../data/data.dart';
 import '../models/employee.dart';
 import 'department_page.dart';
 import 'job_management_page.dart';
+import 'login_page.dart';
 
 class MainPage extends StatelessWidget {
   final List<Job> jobs = [];
@@ -18,6 +20,7 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     return Scaffold(
       appBar: AppBar(
         title: Text("Main Page"),
@@ -86,15 +89,17 @@ class MainPage extends StatelessWidget {
                 );
               },
             ),
-            // ListTile(
-            //   title: Text('Công việc theo từng nhân viên'),
-            //   onTap: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => JobList()),
-            //     );
-            //   },
-            // ),
+            ListTile(
+              title: Text('Đăng xuất'),
+              onTap: () {
+                _auth.signOut();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  (Route<dynamic> route) => false,
+                );
+              },
+            ),
           ],
         ),
       ),
